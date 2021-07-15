@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, process::exit};
 
 fn init() {
     // arg check
@@ -6,7 +6,7 @@ fn init() {
 
     if args.len() < 2{
             print_help();
-            panic!();
+            exit(-1);
     }
 }
 
