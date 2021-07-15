@@ -1,9 +1,20 @@
 use std::env;
 
+fn init() {
+    // arg check
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2{
+            print_help();
+            panic!();
+    }
+}
+
+fn print_help() {
+    println!("Usage: debugger <exec bin>");
+}
+
 fn main() {
-   
-    // make args to vector(string)
-    let args:Vec<String> = env::args().collect();
-    println!("args = {:?}" ,args);
-    
+    init();
+    println!("temporary debugger\n written by Rust!");
 }
