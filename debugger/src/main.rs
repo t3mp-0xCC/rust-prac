@@ -15,7 +15,10 @@ fn main() {
             print_help();
             exit(-1);
     }
-    // TODO: file check
+    
+    // file check
+    let filename = &args[1];
+    let mut bin_file = File::open(filename).expect("[-] file not found !");
 
     
     println!("temporary debugger\nwritten by Rust!");
