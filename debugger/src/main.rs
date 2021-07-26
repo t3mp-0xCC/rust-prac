@@ -18,8 +18,6 @@ fn main() {
     
     // file check
     let filename = &args[1];
-    let mut bin_file = File::open(filename).expect("[-] file not found !");
+    let mut bin_file = File::open(filename).expect("No such file !");
 
-    
-    println!("temporary debugger\nwritten by Rust!");
 }
