@@ -3,19 +3,26 @@ use std::env;
 
 fn main() {
     /*TODO: read cmd from args if args exist*/
-    let mut cmd = String::new();
+    let args: Vec<String> = env::args().collect();
 
-    println!("Simple Brainfuck Interpreter");
-    io::stdin().read_line(&mut cmd)
-        .expect("Failed to read code !");
-    
-    //let output = interpreter(&cmd);
+    match args.len() {
+        // no arguments (read command from user input)
+        1 => {
+            let mut cmd = String::new();
 
-    //println!("{}", output);
+            println!("Simple Brainfuck Interpreter");
+            io::stdin().read_line(&mut cmd)
+                .expect("Failed to read code !");
+            //let output = interpreter(&cmd);
+
+            //println!("{}", output);
+        }
+        // other (has more than one of arguments)
+        _ => {
+        }
 
 }
 
 fn interpreter(cmd: &str) -> String {
-    let mut stack = Vec<String>::new();
-
+    
 }
