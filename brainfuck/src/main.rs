@@ -5,7 +5,6 @@ use std::path::Path;
 use std::fs::File;
 
 fn main() {
-    /*TODO: read cmd from args if args exist*/
     let args: Vec<String> = env::args().collect();
 
     match args.len() {
@@ -17,7 +16,6 @@ fn main() {
             io::stdin().read_line(&mut cmd)
                 .expect("Failed to read code !");
             //let output = interpreter(&cmd);
-
             //println!("{}", output);
         }
         // other (has more than one of arguments)
@@ -32,7 +30,6 @@ fn main() {
 
                 Ok(file) => file, 
             };
-
             // string for read cmd
             let mut cmd = String::new();
             match file.read_to_string(&mut cmd){
