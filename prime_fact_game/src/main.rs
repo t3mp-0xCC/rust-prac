@@ -4,10 +4,11 @@ use rand::Rng;
 /*TODO: is_prime*/
 /*TODO: Time Attack*/
 /*TODO: Terminal UI*/
+
 fn main() {
     let mut composite_num = composite_num_gen(); 
     let mut input_str = String::new();
-    let mut input_prime: u32;
+    let mut input_prime;
 
     println!("Prime Factorization Game");
 
@@ -26,8 +27,23 @@ fn main() {
     println!("Factorizationed !");
 }
 
-/*prime => 1, other => 0*/
-fn is_prime(num: u32) -> bool { 
+fn is_prime(n: usize) -> bool {
+    // Sieve of Eratosthenes
+    let mut sieve = vec![true; n+1];
+    sieve[0] = false;
+    sieve[1] = false;
+
+    for i in 2..6{
+        if sieve[i] {
+            let mut j = i * i;
+            while j < n+1 {
+                sieve[j] = false;
+                j += i;
+            }
+        }
+    }
+   
+    sieve[n]
 }
 
 fn composite_num_gen() -> u32 {
