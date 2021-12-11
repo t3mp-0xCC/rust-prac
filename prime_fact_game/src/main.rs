@@ -1,7 +1,7 @@
 use std::io;
 use rand::Rng;
 
-/*TODO: is_prime*/
+/*TODO: is_prime arg issue*/
 /*TODO: Time Attack*/
 /*TODO: Terminal UI*/
 
@@ -29,6 +29,7 @@ fn main() {
 
 fn is_prime(n: usize) -> bool {
     // Sieve of Eratosthenes
+    // prime table
     let mut sieve = vec![true; n+1];
     sieve[0] = false;
     sieve[1] = false;
@@ -51,4 +52,6 @@ fn composite_num_gen() -> u32 {
     while is_prime(rand_num) {
         rand_num = rand::thread_rng().gen_range(2, 100);
     }
+
+    rand_num
 }
