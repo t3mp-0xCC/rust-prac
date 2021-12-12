@@ -35,27 +35,48 @@ fn main() -> Result<(), io::Error>{
     terminal.clear()?;    
 
     // draw TUI
-    loop {
-        terminal.draw(|f| {
-            let chunks0 = Layout::default()
-                .margin(1)
-                .direction(Direction::Vertical)
-                .constraints(
-                    [
-                        Constraint::Length(2),
-                        Constraint::Percentage(80),
-                        Constraint::Length(1),
-                    ]
-                    .as_ref(),
-                )
-                .split(f.size());
-            let text = Text::from("Simple Roulette");
-            f.render_widget(
-                Paragraph::new(text).style(Style::default().add_modifier(Modifier::BOLD)),
-                chunks0[0],
-            );
-        })?;
-    }
+    terminal.draw(|f| {
+        let chunks0 = Layout::default()
+            .margin(1)
+            .direction(Direction::Vertical)
+            .constraints(
+                [
+                    Constraint::Length(2),
+                    Constraint::Percentage(80),
+                    Constraint::Length(1),
+                ]
+                .as_ref(),
+            )
+            .split(f.size());
+        
+        // title
+        let text = Text::from("Simple Roulette");            
+        f.render_widget(
+            Paragraph::new(text).style(Style::default().add_modifier(Modifier::BOLD)),
+            chunks0[0],
+        );
+
+        // list of elements
+        let chunks1 =  Layout::default()
+            .direction(Direction::Horizontal)
+            .constraints(
+                [
+                    Constraint::Percentage(100),
+                ].as_ref()
+            ).split(chunks0[1]);
+
+        // elements list
+        let block = Block::default().title("elements").borders(Borders::ALL);
+        f.render_widget(block, chunks1[0]);
+
+        // result
+        let text = Text::from("result");
+        f.render_widget(
+            Paragraph::new(text).style(Style::default().bg(Color::White).fg(Color::Black)),
+            chunks0[2],
+        );
+
+    })?;
 
     Ok(())
 
