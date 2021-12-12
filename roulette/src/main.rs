@@ -2,8 +2,7 @@ use std::{
     env,
     fs::File,
     io::{self, BufRead, BufReader},
-    path::Path,
-    fmt::Display
+    path::Path
 };
 use rand::Rng;
 
@@ -21,7 +20,7 @@ fn main() {
         .expect("file not found !");
 
     // show elements of file
-    println!("Roulette of Elements");
+    println!("Elements of Roulette");
     let mut i = 1;
     for element in roulette_elements.iter() {
         println!("{}: {:?}",i , element);
@@ -29,7 +28,7 @@ fn main() {
     }
 
     // roulette time !
-    let mut rand_num = rand::thread_rng().gen_range(1, roulette_elements.len());
+    let rand_num = rand::thread_rng().gen_range(1, roulette_elements.len());
     println!("***{:?}***", roulette_elements[rand_num]);
 
 }
