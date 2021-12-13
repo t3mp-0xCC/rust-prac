@@ -2,19 +2,20 @@ use std::{
     env,
     fs::File,
     io::{self, BufRead, BufReader, stdout},
-    path::Path
+    path::Path, cell
 };
 use termion::raw::IntoRawMode;
 use tui::{
     backend::TermionBackend,
-    layout::{Constraint, Direction, Layout},
+    layout::{Alignment, Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    text::Text,
-    widgets::{Block, Borders, Cell, Paragraph, Row, Table,},
+    text::{Span, Spans, Text},
+    widgets::{BarChart, Block, Borders,Cell, List, Paragraph, Row, Table, TableState, Wrap,},
     Terminal
 };
 use rand::Rng;
 
+/*TODO: show list of elements*/
 fn main() -> Result<(), io::Error>{
     // show help
     let args: Vec<String> = env::args().collect();
@@ -25,8 +26,7 @@ fn main() -> Result<(), io::Error>{
 
     // reading file and get elements as vec
     let path = Path::new(&args[1]);
-    let roulette_elements = lines_from_file(path)
-        .expect("file not found !");
+    let roulette_elements =  lines_from_file(path);
 
     //init
     let stdout = io::stdout().into_raw_mode()?;
@@ -42,7 +42,7 @@ fn main() -> Result<(), io::Error>{
             .constraints(
                 [
                     Constraint::Length(2),
-                    Constraint::Percentage(80),
+                    Constraint::Percentage(90),
                     Constraint::Length(1),
                 ]
                 .as_ref(),
