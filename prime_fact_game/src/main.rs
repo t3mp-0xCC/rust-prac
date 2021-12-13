@@ -1,22 +1,22 @@
 use std::io;
+use std::str::FromStr;
 use rand::Rng;
 
+/*TODO: Input prime chain*/
 /*TODO: Time Attack*/
 /*TODO: Terminal UI*/
 
 fn main() {
     let mut composite_num = composite_num_gen(); 
-    let mut input_str = String::new();
     let mut input_prime;
 
     println!("Prime Factorization Game");
 
     while !is_prime(composite_num) {
-        io::stdin().read_line(&mut input_str)
-            .expect("Input Error !");
-        input_prime = input_str.parse::<u32>().unwrap();
+        println!("{}", composite_num);
+        input_prime = read_atoi::<u32>();
 
-        match is_prime(input_prime.try_into().unwrap()) {
+        match is_prime(input_prime) {
             false => println!("Not Prime !"),
             true => composite_num = composite_num / input_prime,
         }
@@ -52,4 +52,10 @@ fn composite_num_gen() -> u32 {
     }
 
     rand_num
+}
+
+fn read_atoi<T: std::str::FromStr>() -> u32 {
+    let mut s = String::new();
+    std::io::stdin().read_line(&mut s).ok();
+    s.trim().parse().ok().unwrap()
 }
