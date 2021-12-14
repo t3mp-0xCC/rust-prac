@@ -14,7 +14,6 @@ use tui::{
     Terminal
 };
 use rand::Rng;
-use unicode_width::UnicodeWidthStr;
 
 /*TODO: show list of elements*/
 fn main() -> Result<(), io::Error>{
@@ -27,7 +26,7 @@ fn main() -> Result<(), io::Error>{
 
     // reading file and get elements as vec
     let path = Path::new(&args[1]);
-    let file =  lines_from_file(path);
+    let roulette_elements =  lines_from_file(path);
 
     //init
     let stdout = io::stdout().into_raw_mode()?;
@@ -57,7 +56,7 @@ fn main() -> Result<(), io::Error>{
             chunks0[0],
         );
 
-        // make chunks for list
+        // list of elements
         let chunks1 =  Layout::default()
             .direction(Direction::Horizontal)
             .constraints(
@@ -66,28 +65,20 @@ fn main() -> Result<(), io::Error>{
                 ].as_ref()
             ).split(chunks0[1]);
 
-        // elements list block
+        // elements list
         let block = Block::default().title("elements").borders(Borders::ALL);
         f.render_widget(block, chunks1[0]);
-        // make vector of elements
-        let elements: Vec<ListItem> = file
-            .iter()
-            .enumerate()
-            .map(|(i, m)|{
-                let element = Spans::from(Span::raw(format!("{}: {:?}", i, m)));
-                ListItem::new(element)
-            })
-            .collect();
-
-        // make list
-        let element_list = List::new(elements)
-        .block(Block::default().borders(Borders::ALL)
-            .title("elements")
-        )
-        .highlight_symbol(">> ");
-        f.render_widget(element_list, chunks1[0]);
-
-        
+        let elements: Vec<ListItem> = roulette_elements
+        .iter()
+        .enumerate()
+        .map(|(i, m)| {
+            let content = vec![Spans::from(Span::raw(format!("{}: {:?}", i, m)))];
+            ListItem::new(content)
+        })
+        .collect();
+        let elements =
+        List::new(elements).block(Block::default().borders(Borders::ALL));
+        f.render_widget(elements, chunks1[0]);
 
         // result
         let text = Text::from("result");
@@ -106,4 +97,3 @@ fn main() -> Result<(), io::Error>{
 fn lines_from_file(file: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(file)?).lines().collect()
 }
-
