@@ -86,7 +86,6 @@ fn main() -> Result<(), io::Error>{
         )
         .highlight_symbol(">> ");
         f.render_widget(element_list, chunks1[0]);
-
         
 
         // result
