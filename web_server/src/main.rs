@@ -10,6 +10,7 @@ use std::{
 
 fn main() {
     /*TODO: parse args and change port*/
+    /*TODO: make log file*/
     /*let args: Vec<String> = env::args().collect();
     let port = match args[1].as_str() {
         "-p" => args[2].as_str(),
@@ -32,28 +33,19 @@ fn handle_connection(mut stream: TcpStream) {
 
     let get = b"GET / HTTP/1.1\r\n";
 
-    if buffer.starts_with(get) {
-        let mut html = File::open("./index.html").expect("./index.html does not exist");
-
-        let mut contents = String::new();
-        html.read_to_string(&mut contents).unwrap();
-
-        let responce = format!("HTTP/1.1 200 OK\r\n\r\n{}", contents);
-
-        stream.write(responce.as_bytes()).unwrap();
-        stream.flush().unwrap();
-        println!("Responce: {}", responce);
+    let (status_line, filename) = if buffer.starts_with(get) {
+        ("HTTP/1.1 200 OK\r\n\r\n", "./index.html")
     } else {
-        let status_line = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
-        let mut html = File::open("./404.html").expect("./404.html does not exist !");
+        ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "./404.html")
+    };
+        
+    let mut html = File::open(filename).unwrap();
+    let mut contents = String::new();
+    html.read_to_string(&mut contents).unwrap();
 
-        let mut contents = String::new();
-        html.read_to_string(&mut contents).unwrap();
+    let responce = format!("{}{}", status_line, contents);
 
-        let responce = format!("{}{}", status_line, contents);
-
-        stream.write(responce.as_bytes()).unwrap();
-        stream.flush().unwrap();
-        println!("Responce: {}", responce);
-    }
+    stream.write(responce.as_bytes()).unwrap();
+    stream.flush().unwrap();
+    println!("Responce: {}", responce);
 }
