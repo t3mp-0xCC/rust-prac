@@ -29,14 +29,31 @@ fn handle_connection(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
     println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
-   
-    let mut html = File::open("./index.html").expect("./index.html does not exist");
 
-    let mut contents = String::new();
-    html.read_to_string(&mut contents).unwrap();
+    let get = b"GET / HTTP/1.1\r\n";
 
-    let responce = format!("HTTP/1.1 200 OK\r\n\r\n{}", contents);
+    if buffer.starts_with(get) {
+        let mut html = File::open("./index.html").expect("./index.html does not exist");
 
-    stream.write(responce.as_bytes()).unwrap();
-    stream.flush().unwrap();
+        let mut contents = String::new();
+        html.read_to_string(&mut contents).unwrap();
+
+        let responce = format!("HTTP/1.1 200 OK\r\n\r\n{}", contents);
+
+        stream.write(responce.as_bytes()).unwrap();
+        stream.flush().unwrap();
+        println!("Responce: {}", responce);
+    } else {
+        let status_line = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
+        let mut html = File::open("./404.html").expect("./404.html does not exist !");
+
+        let mut contents = String::new();
+        html.read_to_string(&mut contents).unwrap();
+
+        let responce = format!("{}{}", status_line, contents);
+
+        stream.write(responce.as_bytes()).unwrap();
+        stream.flush().unwrap();
+        println!("Responce: {}", responce);
+    }
 }
