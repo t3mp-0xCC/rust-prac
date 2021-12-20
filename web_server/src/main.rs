@@ -1,4 +1,5 @@
 use std::{
+    thread,
     env,
     str,
     path::Path,
@@ -21,8 +22,9 @@ fn main() {
     println!("[+] HTTP Server Started !");
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-
-        handle_connection(stream);
+        thread::spawn(|| {
+            handle_connection(stream);
+        });
     }
 }
 
