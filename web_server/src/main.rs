@@ -12,13 +12,15 @@ use std::{
 fn main() {
     /*TODO: parse args and change port*/
     /*TODO: make log file*/
-    /*let args: Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().collect();
     let port = match args[1].as_str() {
         "-p" => args[2].as_str(),
         _ => "8080",
-    };*/
+    };
+    let mut address = String::from("127.0.0.1:");
+    address += port;
 
-    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
+    let listener = TcpListener::bind(address).unwrap();
     println!("[+] HTTP Server Started !");
     for stream in listener.incoming() {
         let stream = stream.unwrap();
