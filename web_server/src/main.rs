@@ -5,7 +5,7 @@ use std::{
     path::Path,
     string,
     fs::File,
-    net::{TcpListener, TcpStream}, 
+    net::{TcpListener, TcpStream, SocketAddr, SocketAddrV4, Ipv4Addr}, 
     io::{Read, prelude, Write}, fmt::format,
 };
 
@@ -13,14 +13,15 @@ fn main() {
     /*TODO: parse args and change port*/
     /*TODO: make log file*/
     let args: Vec<String> = env::args().collect();
-    let port = match args[1].as_str() {
-        "-p" => args[2].as_str(),
-        _ => "8080",
+    let port: u16 = match args[1].as_str() {
+        "-p" => args[2].parse::<u16>().unwrap(),
+        _ => "8080".parse::<u16>().unwrap(),
     };
-    let mut address = String::from("127.0.0.1:");
-    address += &port.to_string();
 
-    let listener = TcpListener::bind(address).unwrap();
+    let mut socket = SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 8080);
+    socket.set_port(port);
+
+    let listener = TcpListener::bind(socket).unwrap();
     println!("[+] HTTP Server Started !");
     for stream in listener.incoming() {
         let stream = stream.unwrap();
