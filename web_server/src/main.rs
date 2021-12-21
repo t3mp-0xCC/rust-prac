@@ -18,7 +18,7 @@ fn main() {
         _ => "8080",
     };
     let mut address = String::from("127.0.0.1:");
-    address += port;
+    address += &port.to_string();
 
     let listener = TcpListener::bind(address).unwrap();
     println!("[+] HTTP Server Started !");
