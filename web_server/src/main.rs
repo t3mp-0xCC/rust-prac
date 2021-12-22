@@ -8,10 +8,12 @@ use std::{
     net::{TcpListener, TcpStream, SocketAddr, SocketAddrV4, Ipv4Addr}, 
     io::{Read, prelude, Write}, fmt::format,
 };
+use clap::{App, Arg, SubCommand};
 
 fn main() {
     /*TODO: parse args and change port*/
     /*TODO: make log file*/
+
     let args: Vec<String> = env::args().collect();
     let port: u16 = match args[1].as_str() {
         "-p" => args[2].parse::<u16>().unwrap(),
